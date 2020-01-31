@@ -9,6 +9,8 @@ class App(tk.Frame):
 		self.d = []
 		self.labels = ['Email: ', 'Password: ']
 		self.display()
+		self.confirm()
+		
 
 	def display(self):
 		for index in range(len(self.labels)):
@@ -16,8 +18,9 @@ class App(tk.Frame):
 
 		for i in range(len(self.d)):
 			for j in range(len(self.d[i])):
-				self.d[i][j].grid(row=i, column=j)
+				self.d[i][j].grid(row=i, column=j, sticky='W')
 
+		
 	def setText(self, index):
 		# Label
 		self.label = tk.Label(self)
@@ -28,6 +31,17 @@ class App(tk.Frame):
 		self.entry['textvariable'] = tk.StringVar()
 		
 		return self.label, self.entry
+
+	def getEntry(self):
+		self.email = self.d[0][1]
+		self.password = self.d[1][1]
+		print(self.email.get(), self.password.get())
+
+	def confirm(self):
+		login = tk.Button(self)
+		login['text'] = 'Login'
+		login['command'] = self.getEntry
+		login.grid(row=len(self.d)+1, column=0, sticky='S')
 
 root = tk.Tk()
 app = App(root)

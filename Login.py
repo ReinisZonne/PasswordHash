@@ -1,24 +1,29 @@
 import tkinter as tk
 
+
 class App(tk.Frame):
 
 	def __init__(self, master):
 		super().__init__(master)
 		self.master = master
 		self.pack()
-		self.d = []
+		self.display = []
+		self.email = None
+		self.password = None
+		self.newLogin = None
 		self.labels = ['Email: ', 'Password: ']
-		self.display()
-		self.confirm()
+		self.checkButton()
+		#self.getDisplay()
+		#self.confirm()
 		
 
-	def display(self):
+	def getDisplay(self):
 		for index in range(len(self.labels)):
-			self.d.append(self.setText(index))
+			self.display.append(self.setText(index))
 
-		for i in range(len(self.d)):
-			for j in range(len(self.d[i])):
-				self.d[i][j].grid(row=i, column=j, sticky='W')
+		for i in range(len(self.display)):
+			for j in range(len(self.display[i])):
+				self.display[i][j].grid(row=i, column=j, sticky='W')
 
 		
 	def setText(self, index):
@@ -29,19 +34,45 @@ class App(tk.Frame):
 		# Entry
 		self.entry = tk.Entry(self)
 		self.entry['textvariable'] = tk.StringVar()
+		self.entry['show'] = '*'
 		
 		return self.label, self.entry
 
 	def getEntry(self):
-		self.email = self.d[0][1]
-		self.password = self.d[1][1]
-		print(self.email.get(), self.password.get())
+		self.e = self.display[0][1]
+		self.p = self.display[1][1]
+
+		self.email = self.e.get()
+		self.password = self.p.get()
 
 	def confirm(self):
 		login = tk.Button(self)
 		login['text'] = 'Login'
 		login['command'] = self.getEntry
-		login.grid(row=len(self.d)+1, column=0, sticky='S')
+		login.grid(row=len(self.display)+1, column=0, sticky='S')
+
+
+	def checkButton(self):
+
+		self.buttonOne = tk.Checkbutton(self)
+		self.buttonOne['text'] = 'Login'
+		self.buttonOne['variable'] = tk.IntVar()
+		self.buttonOne['onvalue'] = 1
+		self.buttonOne.grid(row=0, column=0)
+
+
+		self.buttonTwo = tk.Checkbutton(self)
+		self.buttonTwo['text'] = 'Register'
+		self.buttonTwo['variable'] = tk.IntVar()
+		self.buttonOne['onvalue'] = 1
+		self.buttonTwo.grid(row=1, column=0)
+
+		# ok = tk.Button(self)
+		# ok['text'] = 'Ok'
+		# ok['command'] = tk.Frame.destroy(tk.Frame)
+		# ok.grid(row=2, column=0)
+
+
 
 root = tk.Tk()
 app = App(root)

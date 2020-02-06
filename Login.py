@@ -1,4 +1,6 @@
 import tkinter as tk
+import hashlib as hs
+from save import Message
 
 
 class App(tk.Frame):
@@ -6,15 +8,14 @@ class App(tk.Frame):
 	def __init__(self, master):
 		super().__init__(master)
 		self.master = master
+		self.ans = 0
 		self.pack()
 		self.display = []
 		self.email = None
 		self.password = None
-		self.newLogin = None
 		self.labels = ['Email: ', 'Password: ']
-		self.checkButton()
-		#self.getDisplay()
-		#self.confirm()
+		self.getDisplay()
+		self.confirm()
 		
 
 	def getDisplay(self):
@@ -34,8 +35,9 @@ class App(tk.Frame):
 		# Entry
 		self.entry = tk.Entry(self)
 		self.entry['textvariable'] = tk.StringVar()
-		self.entry['show'] = '*'
-		
+		if index == 1:		
+			self.entry['show'] = '*'
+	
 		return self.label, self.entry
 
 	def getEntry(self):
@@ -44,6 +46,13 @@ class App(tk.Frame):
 
 		self.email = self.e.get()
 		self.password = self.p.get()
+		self.hashPassword = hs.sha256(b'self.password')
+		#self.hashPassword = hs.name(self.hashPassword)
+
+		with open('save.txt', 'w') as save:
+			save.write(self.email)
+			save.write('\n')
+			save.write(self.hashPassword.hexdigest())
 
 	def confirm(self):
 		login = tk.Button(self)
@@ -52,28 +61,7 @@ class App(tk.Frame):
 		login.grid(row=len(self.display)+1, column=0, sticky='S')
 
 
-	def checkButton(self):
-
-		self.buttonOne = tk.Checkbutton(self)
-		self.buttonOne['text'] = 'Login'
-		self.buttonOne['variable'] = tk.IntVar()
-		self.buttonOne['onvalue'] = 1
-		self.buttonOne.grid(row=0, column=0)
-
-
-		self.buttonTwo = tk.Checkbutton(self)
-		self.buttonTwo['text'] = 'Register'
-		self.buttonTwo['variable'] = tk.IntVar()
-		self.buttonOne['onvalue'] = 1
-		self.buttonTwo.grid(row=1, column=0)
-
-		# ok = tk.Button(self)
-		# ok['text'] = 'Ok'
-		# ok['command'] = tk.Frame.destroy(tk.Frame)
-		# ok.grid(row=2, column=0)
-
-
-
-root = tk.Tk()
-app = App(root)
-app.mainloop()
+if __name__ == '__main__':
+	root = tk.Tk()
+	app = App(root)
+	app.mainloop()

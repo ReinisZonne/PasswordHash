@@ -5,26 +5,33 @@ class Message(tk.Frame):
 	def __init__(self, master):
 		super().__init__(master)
 		self.master = master
-		self.pack()
-		self.ans = None  
+		self.pack()  
 		self.text = ['Login', 'Register']
 		self.buttons = []
+		self.ans = [0]
+		self.d = {0: tk.BooleanVar(), 1: tk.BooleanVar()}
 		self.display()
-	def getInfo(self):
-		self.getLogin = self.buttons[0][1]['variable']
-		self.getRegister = self.buttons[1][1]['variable']
 
-		if self.getLogin == 1 or self.getRegister == 0:
-			self.ans = True
-		else:
-			self.ans = False
+
+	def getInfo(self):
+		self.getLogin = self.d[0].get()
+		self.getRegister = self.d[1].get()
+		#print(self.getLogin, self.getRegister)
+
+		if self.getLogin == True:
+			self.ans[0] = True
+		elif self.getRegister == True:
+			self.ans[0] = False
+		# else:
+		# 	self.ans = False
+		#print(self.ans)
 
 	def getButton(self, index):
 		label = tk.Label(self)
 		label['text'] = self.text[index]
 
 		button = tk.Checkbutton(self)
-		button['variable'] = tk.IntVar()
+		button['variable'] = self.d[index]
 		button['command'] = self.getInfo
 
 		return label, button
@@ -38,6 +45,8 @@ class Message(tk.Frame):
 			for j in range(len(self.buttons[i])):
 				self.buttons[i][j].grid(row=i, column=j)
 				#print(self.buttons[i][j])
+
+		self.getInfo()
 
 		# Exit
 		self.exit = tk.Button(self)
